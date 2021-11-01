@@ -1,6 +1,10 @@
 package users
 
-import "github.com/bookstore_users-api/utils/errors"
+import (
+	"strings"
+
+	"github.com/bookstore_users-api/utils/errors"
+)
 
 type User struct {
 	Id          int64  `json: "id"`
@@ -11,8 +15,13 @@ type User struct {
 }
 
 func (u *User) Validate() *errors.RestError {
-	if u.Id == 0 {
-		return errors.NewBadRequest("invalid id")
+	u.FirstName = strings.TrimSpace(u.FirstName)
+	u.LastName = strings.TrimSpace(u.LastName)
+
+	u.Email = strings.TrimSpace(u.Email)
+	if u.Email == "" {
+		return errors.NewBadRequest("invalid email address")
 	}
+
 	return nil
 }

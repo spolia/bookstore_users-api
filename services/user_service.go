@@ -18,6 +18,7 @@ func GetUser(userID int64) (*users.User, *errors.RestError) {
 	}
 	return user, nil
 }
+
 func CreateUser(user users.User) (*users.User, *errors.RestError) {
 	if err := user.Validate(); err != nil {
 		return nil, err
@@ -30,7 +31,35 @@ func CreateUser(user users.User) (*users.User, *errors.RestError) {
 	return &user, nil
 }
 
-func FindUser() {
+func UpdateUser(isPartial bool, user users.User) (*users.User, *errors.RestError) {
+	current, err := GetUser(user.Id)
+	if err != nil {
+		return nil, err
+	}
 
+	if err := user.Validate(); err != nil {
+		return nil, err
+	}
+
+	if isPartial {
+		if current.FirstName != "" {
+			current.FirstName = user.FirstName
+		}
+		if current.LastName != "" {
+			current.LastName = user.LastName
+		}
+		if current.Email != "" {
+			current.Email = user.Email
+		}
+	} else {
+		current.FirstName = user.FirstName
+		current.LastName = user.LastName
+		current.Email = user.Email
+	}
+
+	if err := current.Update(); err != nil {
+		return nil, err
+	}
+
+	return current, nil
 }
-
