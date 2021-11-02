@@ -12,7 +12,7 @@ This application handles users.
 
 This project was written in golang, designed to use MVC architecture and DAO pattern to abstract data persistence.
 
-![alt](assets/users_diagram.png)
+![alt](assets/users-diagram.png)
 
 
 ## Endpoints
@@ -23,7 +23,7 @@ This project was written in golang, designed to use MVC architecture and DAO pat
   
 - `PUT  /user/:user_id` : Updates a user.
   
-- `PATCH /users/:user_id` : Updates some user data. 
+- `PATCH /user/:user_id` : Updates some user data. 
   
-- `DELETE /users/:user_id`: Deletes a user.
+- `DELETE /user/:user_id`: Deletes a user.
 
