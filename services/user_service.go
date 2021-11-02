@@ -5,7 +5,19 @@ import (
 	"github.com/bookstore_users-api/utils/errors"
 )
 
-func GetUser(userID int64) (*users.User, *errors.RestError) {
+var UserService userClient = &userservice{}
+
+type userservice struct {
+}
+
+type userClient interface {
+	GetUser(int64) (*users.User, *errors.RestError)
+	CreateUser(users.User) (*users.User, *errors.RestError)
+	UpdateUser(bool, users.User) (*users.User, *errors.RestError)
+	DeleteUser(int64) *errors.RestError
+}
+
+func (s *userservice) GetUser(userID int64) (*users.User, *errors.RestError) {
 	if userID <= 0 {
 		return nil, errors.NewBadRequest("invalid user_id")
 	}
@@ -19,7 +31,7 @@ func GetUser(userID int64) (*users.User, *errors.RestError) {
 	return user, nil
 }
 
-func CreateUser(user users.User) (*users.User, *errors.RestError) {
+func (s *userservice) CreateUser(user users.User) (*users.User, *errors.RestError) {
 	if err := user.Validate(); err != nil {
 		return nil, err
 	}
@@ -31,8 +43,8 @@ func CreateUser(user users.User) (*users.User, *errors.RestError) {
 	return &user, nil
 }
 
-func UpdateUser(isPartial bool, user users.User) (*users.User, *errors.RestError) {
-	current, err := GetUser(user.Id)
+func (s *userservice) UpdateUser(isPartial bool, user users.User) (*users.User, *errors.RestError) {
+	current, err := s.GetUser(user.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -62,4 +74,13 @@ func UpdateUser(isPartial bool, user users.User) (*users.User, *errors.RestError
 	}
 
 	return current, nil
+}
+
+func (s *userservice) DeleteUser(userID int64) *errors.RestError {
+	current, err := s.GetUser(userID)
+	if err != nil {
+		return err
+	}
+
+	return current.Delete()
 }
