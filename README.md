@@ -11,8 +11,11 @@ This application handles users.
 ## Project Structure
 
 This project was written in golang, designed to use MVC architecture and DAO pattern to abstract data persistence.
+
 ![alt](assets/users_diagram.png)
-## Endpoint
+
+
+## Endpoints
 
 - `GET  /user/:user_id` : Returns the user data.
   
