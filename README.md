@@ -10,16 +10,17 @@ This application handles users.
 
 ## Project Structure
 
-This project was written in golang, designed to use MVC architecture and DAO pattern.
-
+This project was written in golang, designed to use MVC architecture and DAO pattern to abstract data persistence.
+![alt](assets/users_diagram.png)
 ## Endpoint
 
-- GET user/:user_id : Given a user_id return the user data.
+- `GET  /user/:user_id` : Returns the user data.
   
-- POST users : Saves a new user. PUT user/:user_id : Given a
-user_id updates a user.
+- `POST /users` : Saves a new user. 
   
-- PATCH user/:user_id : Given a user_id updates some user data. 
+- `PUT  /user/:user_id` : Updates a user.
   
-- DELETE user/:user_id: Given a user_id deletes a user.
+- `PATCH /users/:user_id` : Updates some user data. 
+  
+- `DELETE /users/:user_id`: Deletes a user.
 
