@@ -6,13 +6,12 @@ Users API Service
 
 ## Overview
 
-This application handles users.
-
-use for database: mysql and gin for http framework.
+The main objetive of this application is handle users data. For this, different services described below are provided.
 
 ## Project Structure
 
 This project was written in golang, designed to use MVC architecture and DAO pattern to abstract data persistence.
+Also, Mysql database and GIN as http framework.
 
 ![alt](assets/users-diagram.png)
 
