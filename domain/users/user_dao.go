@@ -1,11 +1,13 @@
 package users
 
 import (
+	"strings"
 	"time"
 
 	"github.com/bookstore_users-api/datasources/mysql/users_db"
 	"github.com/bookstore_users-api/logger"
 	"github.com/bookstore_users-api/utils/errors"
+	"github.com/bookstore_users-api/utils/mysql_utils"
 )
 
 // Save insert user into database
@@ -45,6 +47,27 @@ func (u *User) Get() *errors.RestError {
 	result := stmt.QueryRow(u.Id)
 	if err := result.Scan(&u.Id, &u.FirstName, &u.LastName, &u.Email, &u.DateCreated); err != nil {
 		logger.Error("trying to get user by id", err)
+		return errors.NewInternalServerError("database error")
+	}
+
+	return nil
+}
+
+func (u *User) FindByEmail() *errors.RestError {
+	stmt, err := users_db.ClientDB.Prepare("SELECT id, first_name, last_name, email, date_created, status FROM users WHERE email=?;")
+	if err != nil {
+		logger.Error("preparing get user by email statement", err)
+		return errors.NewInternalServerError("database error")
+	}
+
+	defer stmt.Close()
+	result := stmt.QueryRow(u.Email)
+	if err := result.Scan(&u.Id, &u.FirstName, &u.LastName, &u.Email, &u.DateCreated); err != nil {
+		if strings.Contains(err.Error(), mysql_utils.ErrorNotRows) {
+			return errors.NewNotFound("invalidcredential")
+		}
+
+		logger.Error("trying to get user by email", err)
 		return errors.NewInternalServerError("database error")
 	}
 

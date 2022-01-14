@@ -15,6 +15,7 @@ type userClient interface {
 	CreateUser(users.User) (*users.User, *errors.RestError)
 	UpdateUser(bool, users.User) (*users.User, *errors.RestError)
 	DeleteUser(int64) *errors.RestError
+	LoginUser(request users.LoginRequest) (*users.User, *errors.RestError)
 }
 
 func (s *userservice) GetUser(userID int64) (*users.User, *errors.RestError) {
@@ -83,4 +84,14 @@ func (s *userservice) DeleteUser(userID int64) *errors.RestError {
 	}
 
 	return current.Delete()
+}
+
+func (s *userservice) LoginUser(request users.LoginRequest) (*users.User, *errors.RestError) {
+	dao := &users.User{
+		Email: request.Email,
+	}
+	if err := dao.FindByEmail(); err != nil {
+		return nil, err
+	}
+	return dao, nil
 }

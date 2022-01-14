@@ -8,6 +8,8 @@ Users API Service
 
 This application handles users.
 
+use for database: mysql and gin for http framework.
+
 ## Project Structure
 
 This project was written in golang, designed to use MVC architecture and DAO pattern to abstract data persistence.
